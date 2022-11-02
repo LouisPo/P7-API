@@ -4,7 +4,8 @@
 
 2eme: dans la barre de menu, séléctionnez file --> new --> project from version control.
 
-3eme: dans l'onglet repository URL, séléctionnez git pour la version control, puis metez l'URL du projet puis cliquez sur clone.
+3eme: dans l'onglet repository URL, séléctionnez git pour la version control, rentrez l'URL: https://github.com/LouisPo/P7-API.git
+du projet puis cliquez sur clone.
 
 4eme: Faire un maven-clean et maven-install à la base du projet.
 
