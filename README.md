@@ -10,3 +10,11 @@ du projet puis cliquez sur clone.
 4eme: Faire un maven-clean et maven-install à la base du projet.
 
 5eme: run P7V2ApiApplication.
+
+Pour la bdd
+
+1er: installer pgAdmin4
+
+2eme: Créer une nouvelle base, nommée patate
+
+4eme: cliquez sur l'onglet restore, cliquez sur filename, cherchez le fichier bdd.sql puis cliquez sur restore.
