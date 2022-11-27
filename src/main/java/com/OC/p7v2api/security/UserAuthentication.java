@@ -11,9 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -35,9 +33,13 @@ public class UserAuthentication {
     private final TokenUtil tokenUtil;
 
 
-    public String successfulAuthentication(String username,String password) throws IOException, ServletException {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public Authentication attemptAuthentication(String username, String password) throws AuthenticationException {
+        log.info("in TestAuthentication in attemptAuthentication with username {} and password is {}", username, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        return authenticationManager.authenticate(authenticationToken);
+    }
+
+    public String successfulAuthentication(Authentication authentication) throws IOException, ServletException {
         log.info("in CustomAuthenticationFilter in successfulAuthentication");
         User user = (User) authentication.getPrincipal();
         String access_token = tokenUtil.createToken(user);
