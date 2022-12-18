@@ -8,17 +8,16 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "BORROW")
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
-@Entity
-public class Borrow {
-
+@Table(name = "RESERVATION")
+public class Reservation {
     @Id
-    @Column(name="BORROW_ID")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="RESERVATION_ID")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -26,23 +25,23 @@ public class Borrow {
     private Date startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="RETURN_DATE")
-    private Date returnDate;
+    @Column(name="END_DATE")
+    private Date endDate;
 
-    @Column(name="ALREADY_EXTENDED")
-    private boolean alreadyExtended;
-
-    @Column(name="IS_OUTDATED")
-    private boolean outdated;
+    private int reservationPosition;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    /*@JoinColumn(name = "user_user_id")*/
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
-
+    public Reservation(Date startDate, Date endDate, User user, Book book) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.user = user;
+        this.book = book;
+    }
 }
