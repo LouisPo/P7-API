@@ -1,6 +1,7 @@
 package com.OC.p7v2api.services;
 
 import com.OC.p7v2api.entities.Borrow;
+import com.OC.p7v2api.entities.Reservation;
 import com.OC.p7v2api.entities.User;
 import com.OC.p7v2api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,12 @@ public class UserService implements UserDetailsService {
         log.info("in UserService in findAllUsers method ");
         return userRepository.findAll();
     }
-    public User getAUserById(Integer id){
+    public User getAUserById(Integer id) throws Exception {
         log.info("in UserService in getAUserById method ");
+        if (id==null){
+            log.info("in UserService in getOneUserById method where id is null");
+            throw new Exception("Id can't be null");
+        }
         return userRepository.getById(id);
     }
 
@@ -42,16 +47,13 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public void deleteAUser(Integer id) {
-        log.info("in UserService in deleteAUser method");
-        User user = userRepository.getById(id);
-        user.setRole(null);
-        saveAUser(user);
-        userRepository.delete(user);;
-    }
 
-    public User saveAUser(User user) {
+    public User saveAUser(User user) throws Exception {
         log.info("in UserService in saveAUser method");
+        if (user==null){
+            log.info("in UserService in saveAUser method where id is null");
+            throw new Exception("User can't be null");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

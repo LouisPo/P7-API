@@ -11,9 +11,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -30,7 +33,7 @@ public class BookController {
     @GetMapping(value = "/books")
     public ResponseEntity<List<BookSlimWithLibraryAndStockDto>> bookList() {
         log.info("HTTP GET request received at /books with bookList");
-        return new ResponseEntity<>(bookDtoMapper.booksToAllBooksDto(bookService.getAscendingSortedBooksById()), HttpStatus.OK);
+        return new ResponseEntity<>(bookDtoMapper.booksToAllBooksDto(bookService.getAllBooksSortedAscendingById()), HttpStatus.OK);
     }
 
     @Transactional
@@ -46,15 +49,23 @@ public class BookController {
 
 
     @PostMapping(value = "/books")
-    public ResponseEntity<BookSlimWithLibraryAndStockDto> saveABook(@RequestBody BookSlimWithLibraryAndStockDto bookDto) {
+    public ResponseEntity<BookSlimWithLibraryAndStockDto> saveABook(@RequestBody BookSlimWithLibraryAndStockDto bookDto) throws Exception {
         log.info("HTTP POST request received at /books with saveABook");
         if (bookDto == null) {
             log.info("HTTP POST request received at /books with saveABook where bookDto is null");
             return new ResponseEntity<>(bookDto, HttpStatus.NO_CONTENT);
         } else {
-            Stock stock = stockService.saveAStock(bookDtoMapper.bookDtoToStock(bookDto));
-            Book book = bookService.saveABook(bookDtoMapper.bookDtoToBook(bookDto));
-            Library library = libraryService.saveALibrary(bookDtoMapper.bookDtoToLibrary(bookDto));
+            Stock stock= new Stock();
+            Book book = new Book();
+            Library library = new Library();
+            try {
+                stock = stockService.saveAStock(bookDtoMapper.bookDtoToStock(bookDto));
+                book = bookService.saveABook(bookDtoMapper.bookDtoToBook(bookDto));
+                library = libraryService.saveALibrary(bookDtoMapper.bookDtoToLibrary(bookDto));
+            } catch (Exception e) {
+                log.info("HTTP POST request received at /books with saveABook where bookDto is invalid");
+                return new ResponseEntity<>(bookDto, HttpStatus.FORBIDDEN);
+            }
             book.setLibrary(library);
             book.setStock(stock);
             bookService.saveABook(book);
@@ -63,7 +74,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/books/delete/{id}")
-    public ResponseEntity deleteABook(@PathVariable Integer id) {
+    public ResponseEntity deleteABook(@PathVariable Integer id) throws Exception {
         log.info("HTTP DELETE request received at /books/delete/" + id + " with deleteABook");
         if (id == null) {
             log.info("HTTP DELETE request received at /books/delete/id where id is null");
@@ -76,7 +87,6 @@ public class BookController {
         bookService.deleteABook(book);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
 
 
 }
