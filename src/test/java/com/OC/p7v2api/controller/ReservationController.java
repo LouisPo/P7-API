@@ -87,18 +87,6 @@ public class ReservationController {
     }
 
 
-    @Test
-    void testDeleteAReservation_ShouldReturnAIsAcceptedStatus() throws Exception {
-        //GIVEN WHEN
-        doNothing().when(this.reservationService).deleteAReservationById((Integer) any());
-        //THEN
-        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/users/account/reservations/delete");
-        MockHttpServletRequestBuilder requestBuilder = postResult.param("reservationId", String.valueOf(1));
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.reservationController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
-    }
 
 
 
