@@ -245,10 +245,6 @@ public class BorrowControllerTest {
         String borrowDtoUnderTestAsAString = (new ObjectMapper()).writeValueAsString(borrowDtoUnderTest);
 
 
-        //WHEN
-        when(this.borrowService.saveABorrow((Borrow) any())).thenReturn(borrow1);
-        when(this.borrowDtoMapper.borrowDtoToBorrow((BorrowDto) any())).thenReturn(borrow2);
-
         //THEN
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/borrows")
                 .contentType(MediaType.APPLICATION_JSON)

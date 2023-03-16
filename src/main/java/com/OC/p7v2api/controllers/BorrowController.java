@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.text.DateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class BorrowController {
         log.info("HTTP GET request received at users/account/borrows with borrowList where {} is the user", user.getLastName());
         return new ResponseEntity<>(borrowDtoMapper.borrowToAllBorrowDto(user.getBorrows()), HttpStatus.OK);
     }
+
 
     @PostMapping(value = "/users/account/borrows/extend")
     public ResponseEntity extendABorrow(@RequestParam Integer borrowId) throws Exception {
@@ -104,7 +106,7 @@ public class BorrowController {
         }
         else {
 
-            borrowService.saveABorrow(borrowDtoMapper.borrowDtoToBorrow(borrowDto));
+            borrowService.save(borrowDtoMapper.borrowDtoToBorrow(borrowDto));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(borrowDto);
     }

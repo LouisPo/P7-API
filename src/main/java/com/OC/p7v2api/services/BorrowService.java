@@ -75,9 +75,12 @@ public class BorrowService {
         borrow.setReturnDate(date);
         borrow.setAlreadyExtended(true);
         saveABorrow(borrow);
+        borrowRepository.save(borrow);
         log.info("in BorrowService in extendABorrow method where borrow book is {} and return date is {} after extension", borrow.getBook().getTitle(), borrow.getReturnDate());
         return borrow;
     }
-
+public void save(Borrow borrow){
+        borrowRepository.save(borrow);
+}
 
 }

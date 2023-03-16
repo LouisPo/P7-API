@@ -43,5 +43,18 @@ public class Borrow {
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
+/*
+    public Borrow(Integer BORROW_ID, Date START_DATE, Date RETURN_DATE, Boolean ALREADY_EXTENDED, Boolean IS_OUTDATED, User USER_ID, Book BOOK_ID) {
 
+        this.id = BORROW_ID;
+        this.startDate = START_DATE;
+        this.returnDate = RETURN_DATE;
+        this.alreadyExtended = ALREADY_EXTENDED;
+        this.outdated = IS_OUTDATED;
+        this.user = USER_ID;
+        this.book = BOOK_ID;
+
+
+    }
+*/
 }
